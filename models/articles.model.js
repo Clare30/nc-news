@@ -5,5 +5,5 @@ exports.selectArticleById = async (id) => {
     "SELECT * FROM articles WHERE article_id = $1",
     [id]
   );
-  return rows;
+  return rows[0];
 };
