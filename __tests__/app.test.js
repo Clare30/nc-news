@@ -29,10 +29,10 @@ describe("/api/topics", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
-        .then(({ body }) => {
-          expect(body).toHaveLength(3);
-          expect((body) => {
-            body.forEach((topic) => {
+        .then(({ body: { topics } }) => {
+          expect(topics).toHaveLength(3);
+          expect((topics) => {
+            topics.forEach((topic) => {
               expect.objectContaining({
                 description: expect.any(String),
                 slug: expect.any(String),
