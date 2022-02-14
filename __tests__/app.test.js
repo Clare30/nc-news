@@ -31,13 +31,13 @@ describe("/api/topics", () => {
         .expect(200)
         .then(({ body: { topics } }) => {
           expect(topics).toHaveLength(3);
-          expect((topics) => {
-            topics.forEach((topic) => {
+          topics.forEach((topic) => {
+            expect(topic).toEqual(
               expect.objectContaining({
                 description: expect.any(String),
                 slug: expect.any(String),
-              });
-            });
+              })
+            );
           });
         });
     });
@@ -59,17 +59,17 @@ describe("/api/articles/:article_id", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body: { article } }) => {
-          expect((article) => {
+          expect(article).toEqual(
             expect.objectContaining({
               author: expect.any(String),
               title: expect.any(String),
               article_id: expect.any(Number),
               body: expect.any(String),
               topic: expect.any(String),
-              created_at: expect.any(Date),
+              created_at: expect.any(String),
               votes: expect.any(Number),
-            });
-          });
+            })
+          );
         });
     });
   });
