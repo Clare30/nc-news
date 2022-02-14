@@ -12,6 +12,17 @@ afterAll(() => {
   db.end();
 });
 
+describe("universal errors", () => {
+  test("status 404, path does not exist", () => {
+    return request(app)
+      .get("/notAPath")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("path does not exist");
+      });
+  });
+});
+
 describe("/api/topics", () => {
   describe("GET", () => {
     test("responds with an array of topic objects", () => {
