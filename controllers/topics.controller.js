@@ -1,9 +1,10 @@
-const { selectTopics } = require("../models/topics.model.js");
+const models = require("../models/index");
 
 exports.getTopics = (req, res, next) => {
-  selectTopics()
+  models.topics
+    .selectTopics()
     .then((topics) => {
-      res.status(200).send(topics);
+      res.status(200).send({ topics });
     })
     .catch(next);
 };
