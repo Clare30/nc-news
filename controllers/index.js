@@ -1,1 +1,2 @@
-exports.topics = require("../controllers/topics.controller.js");
+exports.topics = require("./topics.controller");
+exports.errors = require("./errors.controller");
