@@ -41,5 +41,13 @@ describe("/api/topics", () => {
           });
         });
     });
+    test("404 error: returns error when incorrect path is entered", () => {
+      return request(app)
+        .get("/api/topicsss")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("path does not exist");
+        });
+    });
   });
 });
