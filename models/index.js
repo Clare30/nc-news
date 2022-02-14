@@ -1,1 +1,2 @@
-exports.selectTopics = require("./topics.model.js");
+exports.topics = require("./topics.model.js");
+exports.articles = require("./articles.model.js");
