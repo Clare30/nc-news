@@ -104,6 +104,7 @@ describe("/api/articles/:article_id", () => {
         .send(updatedVotes)
         .expect(200)
         .then(({ body: { article } }) => {
+          expect(article.article_id).toBe(3);
           expect(article.votes).toBe(5);
         });
     });
@@ -114,6 +115,7 @@ describe("/api/articles/:article_id", () => {
         .send(updatedVotes)
         .expect(200)
         .then(({ body: { article } }) => {
+          expect(article.article_id).toBe(1);
           expect(article.votes).toBe(-100);
         });
     });
