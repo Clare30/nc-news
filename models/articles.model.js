@@ -5,5 +5,7 @@ exports.selectArticleById = async (id) => {
     "SELECT * FROM articles WHERE article_id = $1",
     [id]
   );
-  return rows[0];
+  if (rows.length === 0)
+    return Promise.reject({ status: 404, msg: "article does not exist" });
+  else return rows[0];
 };
