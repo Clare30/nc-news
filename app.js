@@ -9,4 +9,6 @@ module.exports = app;
 app.get("/api/topics", controllers.topics.getTopics);
 app.get("/api/articles/:article_id", controllers.articles.getArticleById);
 
-app.all("/*", errors.incorrectPath);
+app.use(errors.handleCustoms);
+app.use(errors.handlePsqlErrors);
+app.use(errors.incorrectPath);
