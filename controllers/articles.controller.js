@@ -1,5 +1,16 @@
 const models = require("../models/index");
 
+exports.getArticles = (req, res, next) => {
+  return models.articles
+    .selectArticles()
+    .then((articles) => {
+      res.status(200).send({ articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 exports.getArticleById = (req, res, next) => {
   const id = req.params.article_id;
 
