@@ -94,3 +94,28 @@ describe("/api/articles/:article_id", () => {
     });
   });
 });
+
+describe("/api/articles/:article_id", () => {
+  describe("PATCH", () => {
+    test("status: 200 - returns an updated article with increased votes amended when given a positive number", () => {
+      const updatedVotes = { inc_votes: 5 };
+      return request(app)
+        .patch("/api/articles/3")
+        .send(updatedVotes)
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article.votes).toBe(5);
+        });
+    });
+    test("status: 200 - returns an updated article with increased votes amended when given a negative number", () => {
+      const updatedVotes = { inc_votes: -200 };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(updatedVotes)
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article.votes).toBe(-100);
+        });
+    });
+  });
+});
