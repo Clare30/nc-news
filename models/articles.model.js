@@ -7,7 +7,7 @@ exports.selectArticleById = async (id) => {
   );
   if (rows.length === 0)
     return Promise.reject({ status: 404, msg: "article does not exist" });
-  else return rows[0];
+  return rows[0];
 };
 
 exports.amendArticle = async (id, votes) => {
@@ -18,5 +18,5 @@ exports.amendArticle = async (id, votes) => {
 
   if (rows.length === 0)
     return Promise.reject({ status: 404, msg: "article does not exist" });
-  else return rows[0];
+  return rows[0];
 };
