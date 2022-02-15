@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("universal errors", () => {
-  test("status 404, path does not exist", () => {
+  test("error: 404 - path does not exist", () => {
     return request(app)
       .get("/notAPath")
       .expect(404)
@@ -25,7 +25,7 @@ describe("universal errors", () => {
 
 describe("/api/topics", () => {
   describe("GET", () => {
-    test("responds with an array of topic objects", () => {
+    test("status: 200 - responds with an array of topic objects", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
@@ -41,7 +41,7 @@ describe("/api/topics", () => {
           });
         });
     });
-    test("404 error: returns error when incorrect path is entered", () => {
+    test("error: 400 - returns error when incorrect path is entered", () => {
       return request(app)
         .get("/api/topicsss")
         .expect(404)
@@ -54,7 +54,7 @@ describe("/api/topics", () => {
 
 describe("/api/articles/:article_id", () => {
   describe("GET", () => {
-    test("responds with an article object using the id", () => {
+    test("status: 200 - responds with an article object using the id", () => {
       return request(app)
         .get("/api/articles/1")
         .expect(200)
@@ -76,7 +76,7 @@ describe("/api/articles/:article_id", () => {
 
     //404 test
 
-    test("404 error when path exists but id does not", () => {
+    test("error: 404 - when path exists but id does not", () => {
       return request(app)
         .get("/api/articles/67")
         .then(({ body }) => {
@@ -84,9 +84,57 @@ describe("/api/articles/:article_id", () => {
         });
     });
 
-    test("400 error when requesting an article that does not exist", () => {
+    test("status: 400 - when requesting an article that does not exist", () => {
       return request(app)
         .get("/api/articles/notAnId")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("bad request");
+        });
+    });
+  });
+});
+
+describe("/api/articles/:article_id", () => {
+  describe("PATCH", () => {
+    test("status: 200 - returns an updated article with increased votes amended when given a positive number", () => {
+      const updatedVotes = { inc_votes: 5 };
+      return request(app)
+        .patch("/api/articles/3")
+        .send(updatedVotes)
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article.article_id).toBe(3);
+          expect(article.votes).toBe(5);
+        });
+    });
+    test("status: 200 - returns an updated article with increased votes amended when given a negative number", () => {
+      const updatedVotes = { inc_votes: -200 };
+      return request(app)
+        .patch("/api/articles/1")
+        .send(updatedVotes)
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article.article_id).toBe(1);
+          expect(article.votes).toBe(-100);
+        });
+    });
+    test("error: 404 - article does not exist", () => {
+      const updatedVotes = { inc_votes: 50 };
+      return request(app)
+        .patch("/api/articles/90")
+        .send(updatedVotes)
+        .expect(404)
+        .then(({ body }) => {
+          console.log(body);
+          expect(body.msg).toBe("article does not exist");
+        });
+    });
+    test("error: 400 - bad request if incorrect body format is sent", () => {
+      const updatedVotes = { inc_votes: "nine" };
+      return request(app)
+        .patch("/api/articles/4")
+        .send(updatedVotes)
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toBe("bad request");

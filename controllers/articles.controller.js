@@ -12,3 +12,17 @@ exports.getArticleById = (req, res, next) => {
       next(err);
     });
 };
+
+exports.updateArticle = (req, res, next) => {
+  const id = req.params.article_id;
+  const votes = req.body.inc_votes;
+
+  return models.articles
+    .amendArticle(id, votes)
+    .then((article) => {
+      res.status(200).send({ article });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
