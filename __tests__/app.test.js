@@ -52,6 +52,32 @@ describe("/api/topics", () => {
   });
 });
 
+describe("/api/articles", () => {
+  describe("GET", () => {
+    test("status: 200 - returns an array of article objects", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(12);
+          articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                body: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+  });
+});
+
 describe("/api/articles/:article_id", () => {
   describe("GET", () => {
     test("status: 200 - responds with an article object using the id", () => {
