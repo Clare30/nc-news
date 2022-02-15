@@ -1,7 +1,9 @@
 const db = require("../db/connection.js");
 
 exports.selectArticles = async () => {
-  const { rows } = await db.query("SELECT * FROM articles;");
+  const { rows } = await db.query(
+    "SELECT * FROM articles ORDER BY created_at DESC;"
+  );
   return rows;
 };
 
