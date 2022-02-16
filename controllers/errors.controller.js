@@ -3,12 +3,14 @@ const app = require("../app.js");
 //error handling for id does not exist
 
 exports.handleCustoms = (err, req, res, next) => {
+  console.log(err);
   if (err.status) res.status(err.status).send({ msg: err.msg });
   else next(err);
 };
 
 //error handling for psql errors
 exports.handlePsqlErrors = (err, req, res, next) => {
+  console.log(err);
   if (err.code === "22P02") res.status(400).send({ msg: "bad request" });
   else next(err);
 };

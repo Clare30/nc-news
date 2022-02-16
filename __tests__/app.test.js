@@ -107,7 +107,15 @@ describe("/api/articles/:article_id", () => {
         });
     });
 
-    //404 test
+    test("status: 200 - responds with the specified article object, including the comment count", () => {
+      return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body: { article } }) => {
+          expect(article.comment_count).toBe("11");
+          expect(article.article_id).toBe(1);
+        });
+    });
 
     test("error: 404 - when path exists but id does not", () => {
       return request(app)
