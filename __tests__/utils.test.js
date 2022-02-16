@@ -1,7 +1,9 @@
+const db = require("../db/connection");
 const {
   convertTimestampToDate,
   createRef,
   formatComments,
+  checkIdExists,
 } = require("../db/helpers/utils");
 
 describe("convertTimestampToDate", () => {
@@ -100,5 +102,35 @@ describe("formatComments", () => {
     const comments = [{ created_at: timestamp }];
     const formattedComments = formatComments(comments, {});
     expect(formattedComments[0].created_at).toEqual(new Date(timestamp));
+  });
+});
+describe("checkIdExists", () => {
+  afterAll(() => {
+    db.end;
+  });
+  test("returns an array containing an object", () => {
+    checkIdExists(1).then((output) => {
+      expect(Array.isArray(output.rows)).toBe(true);
+    });
+  });
+  test("returns article if ID does exist", () => {
+    const article = [
+      {
+        title: "Living in the shadow of a great man",
+        topic: "mitch",
+        author: "butter_bridge",
+        body: "I find this existence challenging",
+        created_at: 1594329060000,
+        votes: 100,
+      },
+    ];
+    checkIdExists(1).then(({ rows }) => {
+      expect(rows[0]).toEqual(article);
+    });
+  });
+  test("returns error if ID does not exist", () => {
+    checkIdExists(155).then((output) => {
+      expect(output).toEqual({ status: 404, msg: "article does not exist" });
+    });
   });
 });
