@@ -1,4 +1,3 @@
-const db = require("../db/connection");
 const {
   convertTimestampToDate,
   createRef,
@@ -105,9 +104,6 @@ describe("formatComments", () => {
   });
 });
 describe("checkIdExists", () => {
-  afterAll(() => {
-    db.end;
-  });
   test("returns an array containing an object", () => {
     checkIdExists(1).then((output) => {
       expect(Array.isArray(output.rows)).toBe(true);
