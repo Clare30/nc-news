@@ -18,8 +18,6 @@ exports.selectArticleById = async (id) => {
   return rows[0];
 };
 
-
-
 exports.amendArticle = async (id, votes) => {
   const { rows } = await db.query(
     "UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;",
