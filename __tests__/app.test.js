@@ -204,6 +204,23 @@ describe("/api/articles/:article_id/comments", () => {
           });
         });
     });
+    test("status: 200 - returns empty array when there are no comments for an article", () => {
+      return request(app)
+        .get("/api/articles/8/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toEqual([]);
+        });
+    });
+
+    test("error: 404 - returns when the article does not exist", () => {
+      return request(app)
+        .get("/api/articles/555/comments")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("article does not exist");
+        });
+    });
   });
 });
 
