@@ -113,6 +113,7 @@ describe("/api/articles/:article_id", () => {
         .expect(200)
         .then(({ body: { article } }) => {
           expect(article.comment_count).toBe("11");
+          expect(article.article_id).toBe(1);
         });
     });
 
