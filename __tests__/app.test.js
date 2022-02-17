@@ -99,6 +99,7 @@ describe("/api/articles", () => {
                 comment_count: expect.any(Number),
               })
             );
+            expect(article.body).toBe(undefined);
           });
         });
     });
