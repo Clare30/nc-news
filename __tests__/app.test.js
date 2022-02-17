@@ -253,7 +253,6 @@ describe("/api/users", () => {
         .then(({ body: { users } }) => {
           expect(users).toHaveLength(4);
           users.forEach((user) => {
-            console.log(user);
             expect(user).toEqual(
               expect.objectContaining({
                 username: expect.any(String),
