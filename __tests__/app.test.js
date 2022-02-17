@@ -222,6 +222,22 @@ describe("/api/articles/:article_id/comments", () => {
         });
     });
   });
+  // describe("POST", () => {
+  //   test("status: 201 - returns posted comment", () => {
+  //     const comment = { username: "lurker", body: "blah blah blah" };
+  //     return request(app)
+  //       .post("/api/articles/3/comments")
+  //       .expect(201)
+  //       .then(({ body: { comment } }) => {
+  //         expect(comment).toEqual({
+  //           comment_id: 19,
+  //           author: "lurker",
+  //           body: "blah blah blah",
+  //           article_id: 3,
+  //         });
+  //       });
+  //   });
+  // });
 });
 
 describe("/api/users", () => {
