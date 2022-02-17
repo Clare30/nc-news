@@ -253,13 +253,14 @@ describe("/api/users", () => {
         .then(({ body: { users } }) => {
           expect(users).toHaveLength(4);
           users.forEach((user) => {
+            console.log(user);
             expect(user).toEqual(
               expect.objectContaining({
                 username: expect.any(String),
-                name: expect.any(String),
-                avatar_url: expect.any(String),
               })
             );
+            expect(user.name).toBe(undefined);
+            expect(user.avatar_url).toBe(undefined);
           });
         });
     });
