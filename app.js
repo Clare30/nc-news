@@ -16,7 +16,10 @@ app.get(
   controllers.comments.getCommentsByArticleId
 );
 app.patch("/api/articles/:article_id", controllers.articles.updateArticle);
-// app.post("/api/articles/:articleId/comments");
+app.post(
+  "/api/articles/:article_id/comments",
+  controllers.comments.postComment
+);
 
 app.use(errors.handleCustoms);
 app.use(errors.handlePsqlErrors);
