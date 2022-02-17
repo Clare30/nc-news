@@ -24,13 +24,11 @@ exports.formatComments = (comments, idLookup) => {
   });
 };
 
-exports.checkIdExists = async (id) => {
-  const output = await db.query(
-    "SELECT * FROM articles WHERE article_id = $1;",
-    [id]
-  );
+exports.checkExists = async (table, column, value, error) => {
+  const query = format("SELECT * FROM %I WHERE %I = $1;", table, column);
+  const output = await db.query(query, [value]);
 
   if (output.rows.length === 0) {
-    return Promise.reject({ status: 404, msg: "article does not exist" });
+    return Promise.reject({ status: 404, msg: error });
   }
 };

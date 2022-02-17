@@ -243,6 +243,63 @@ describe("/api/articles/:article_id/comments", () => {
         });
     });
   });
+  describe("POST", () => {
+    test("status: 201 - returns posted comment", () => {
+      const comment = { username: "lurker", body: "blah blah blah" };
+      return request(app)
+        .post("/api/articles/3/comments")
+        .send(comment)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment.comment_id).toBe(19);
+          expect(comment.author).toBe("lurker");
+          expect(comment.body).toBe("blah blah blah");
+          expect(comment.article_id).toBe(3);
+          expect(comment.votes).toBe(0);
+        });
+    });
+
+    test("error: 404 - returns error if article does not exist", () => {
+      const comment = { username: "lurker", body: "hello" };
+      return request(app)
+        .post("/api/articles/52/comments")
+        .send(comment)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("article does not exist");
+        });
+    });
+    test("error: 404 - returns error if username does not exist", () => {
+      const comment = { username: "lurkerrrr", body: "blahhhhhhh" };
+      request(app)
+        .post("/api/articles/2/comments")
+        .send(comment)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("user does not exist");
+        });
+    });
+    test("error: 400 - returns error if required data is not provided in request", () => {
+      const comment = { username: "lurker" };
+      request(app)
+        .post("/api/articles/4/comments")
+        .send(comment)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("bad request");
+        });
+    });
+    test("error: 400 - returns error if a key is typed incorrectly", () => {
+      const comment = { username: "lurker", myComment: "lol" };
+      request(app)
+        .post("/api/articles/4/comments")
+        .send(comment)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("bad request");
+        });
+    });
+  });
 });
 
 describe("/api/users", () => {
