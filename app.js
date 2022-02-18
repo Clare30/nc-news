@@ -7,6 +7,7 @@ app.use(express.json());
 
 module.exports = app;
 
+app.get("/api", controllers.endpoints.getEndpoints);
 app.get("/api/topics", controllers.topics.getTopics);
 app.get("/api/articles", controllers.articles.getArticles);
 app.get("/api/articles/:article_id", controllers.articles.getArticleById);
