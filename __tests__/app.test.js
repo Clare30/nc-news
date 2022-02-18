@@ -25,7 +25,7 @@ describe("universal errors", () => {
 
 describe("/api", () => {
   describe("GET", () => {
-    test("status: 200 - returns contents of enpoints.json file", () => {
+    test("status: 200 - returns contents of endpoints.json file", () => {
       return request(app)
         .get("/api")
         .expect(200)
