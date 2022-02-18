@@ -4,6 +4,7 @@ exports.getArticles = (req, res, next) => {
   const sortBy = req.query.sort_by;
   const order = req.query.order;
   const topic = req.query.topic;
+
   return models.articles
     .selectArticles(sortBy, order, topic)
     .then((articles) => {
