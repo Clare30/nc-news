@@ -10,7 +10,6 @@ exports.handleCustoms = (err, req, res, next) => {
 
 //error handling for psql errors
 exports.handlePsqlErrors = (err, req, res, next) => {
-  console.log(err);
   if (err.code === "22P02" || err.code === "42P01")
     res.status(400).send({ msg: "bad request" });
   else next(err);
