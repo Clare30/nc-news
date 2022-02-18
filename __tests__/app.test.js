@@ -3,6 +3,7 @@ const app = require("../app.js");
 const request = require("supertest");
 const testData = require("../db/data/test-data");
 const seed = require("../db/seeds/seed.js");
+const req = require("express/lib/request");
 
 beforeEach(() => {
   return seed(testData);
@@ -101,6 +102,64 @@ describe("/api/articles", () => {
             );
             expect(article.body).toBe(undefined);
           });
+        });
+    });
+    test("status: 200 - sorts returned articles by date decending by default", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+    test("status: 200 - sorts by value entered in query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=article_id")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("article_id", { descending: true });
+        });
+    });
+    test("status: 200 - orders by value entered in query", () => {
+      return request(app)
+        .get("/api/articles?order=ASC")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { ascending: true });
+        });
+    });
+    test("status: 200 - filters by the topic entered in query", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          articles.forEach((article) => {
+            expect(article.topic).toBe("mitch");
+          });
+        });
+    });
+    test("error: 400 - sortBy is not a valid sort query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=peas")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("invalid query");
+        });
+    });
+    test("error: 400 - order is not a valid order query", () => {
+      return request(app)
+        .get("/api/articles?order=abcde")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("invalid query");
+        });
+    });
+    test("error: 400 - topic is not a valid topic query", () => {
+      return request(app)
+        .get("/api/articles?topic=fanta")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("invalid query");
         });
     });
   });
