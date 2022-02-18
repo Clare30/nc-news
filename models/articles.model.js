@@ -1,5 +1,4 @@
 const db = require("../db/connection.js");
-const { sort } = require("../db/data/test-data/articles.js");
 
 exports.selectArticles = async (
   sortBy = "created_at",
@@ -21,12 +20,13 @@ exports.selectArticles = async (
   let queryStr = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, COUNT(comments.comment_id)::int AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id`;
 
   if (topic && !acceptedTopic.includes(topic)) {
-    return Promise.reject({ status: 400, msg: "invalid query" });
+    return Promise.reject({ status: 404, msg: "topic not found" });
   } else if (topic) {
     queryVals.push(topic);
     queryStr += ` WHERE topic = $1 `;
   }
   queryStr += ` GROUP BY articles.article_id`;
+
   if (!acceptedSort.includes(sortBy) || !acceptedOrders.includes(order)) {
     return Promise.reject({ status: 400, msg: "invalid query" });
   } else queryStr += ` ORDER BY ${sortBy} ${order}`;
@@ -34,6 +34,9 @@ exports.selectArticles = async (
   queryStr += ";";
 
   const { rows } = await db.query(queryStr, queryVals);
+  if (rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "no articles found" });
+  }
   return rows;
 };
 
