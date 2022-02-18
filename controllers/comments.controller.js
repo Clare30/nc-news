@@ -39,7 +39,7 @@ exports.removeComment = (req, res, next) => {
     utils.checkExists("comments", "comment_id", id, "comment does not exist"),
   ])
     .then(() => {
-      res.status(204).send();
+      res.sendStatus(204);
     })
     .catch((err) => {
       next(err);
