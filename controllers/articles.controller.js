@@ -1,8 +1,11 @@
 const models = require("../models/index");
 
 exports.getArticles = (req, res, next) => {
+  const sortBy = req.query.sort_by;
+  const order = req.query.order;
+  const topic = req.query.topic;
   return models.articles
-    .selectArticles()
+    .selectArticles(sortBy, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
