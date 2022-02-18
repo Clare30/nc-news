@@ -302,6 +302,30 @@ describe("/api/articles/:article_id/comments", () => {
   });
 });
 
+describe("/api/comments/:comment_id", () => {
+  describe("DELETE", () => {
+    test("status: 204 - deletes comment specified by comment id", () => {
+      return request(app)
+        .delete("/api/comments/2")
+        .expect(204)
+        .then(() => {
+          return db.query("SELECT * FROM comments WHERE comment_id = 2;");
+        })
+        .then(({ rows }) => {
+          expect(rows.length).toBe(0);
+        });
+    });
+    test("error: 404 - comment does not exist", () => {
+      return request(app)
+        .delete("/api/comments/233")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("comment does not exist");
+        });
+    });
+  });
+});
+
 describe("/api/users", () => {
   describe("GET", () => {
     test("status: 200 - returns an array of user objects", () => {
