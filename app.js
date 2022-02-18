@@ -20,6 +20,7 @@ app.post(
   "/api/articles/:article_id/comments",
   controllers.comments.postComment
 );
+app.delete("/api/comments/:comment_id", controllers.comments.removeComment);
 
 app.use(errors.handleCustoms);
 app.use(errors.handlePsqlErrors);

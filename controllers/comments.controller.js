@@ -31,3 +31,17 @@ exports.postComment = (req, res, next) => {
       next(err);
     });
 };
+
+exports.removeComment = (req, res, next) => {
+  const id = req.params.comment_id;
+  return Promise.all([
+    models.comments.deleteComment(id),
+    utils.checkExists("comments", "comment_id", id, "comment does not exist"),
+  ])
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
