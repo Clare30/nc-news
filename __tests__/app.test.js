@@ -306,7 +306,7 @@ describe("/api/articles/:article_id/comments", () => {
 
 describe("/api/comments/:comment_id", () => {
   describe("DELETE", () => {
-    test.only("status: 204 - deletes comment specified by comment id", () => {
+    test("status: 204 - deletes comment specified by comment id", () => {
       return request(app)
         .delete("/api/comments/2")
         .expect(204)
@@ -317,6 +317,14 @@ describe("/api/comments/:comment_id", () => {
           expect(rows.length).toBe(0);
         });
     });
+    // test("error: 404 - comment does not exist", () => {
+    //   return request(app)
+    //     .delete("/api/comments/233")
+    //     .expect(404)
+    //     .then(({ body: { msg } }) => {
+    //       expect(msg).toBe("comment does not exist");
+    //     });
+    // });
   });
 });
 
