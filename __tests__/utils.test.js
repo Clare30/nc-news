@@ -2,7 +2,7 @@ const {
   convertTimestampToDate,
   createRef,
   formatComments,
-  checkIdExists,
+  checkExists,
 } = require("../db/helpers/utils");
 
 describe("convertTimestampToDate", () => {
@@ -105,9 +105,11 @@ describe("formatComments", () => {
 });
 describe("checkIdExists", () => {
   test("returns an array containing an object", () => {
-    checkIdExists(1).then((output) => {
-      expect(Array.isArray(output.rows)).toBe(true);
-    });
+    checkExists("articles", "article_id", 1, "article not found").then(
+      (output) => {
+        expect(Array.isArray(output.rows)).toBe(true);
+      }
+    );
   });
   test("returns article if ID does exist", () => {
     const article = [
@@ -120,13 +122,17 @@ describe("checkIdExists", () => {
         votes: 100,
       },
     ];
-    checkIdExists(1).then(({ rows }) => {
-      expect(rows[0]).toEqual(article);
-    });
+    checkExists("articles", "article_id", 1, "article not found").then(
+      ({ rows }) => {
+        expect(rows[0]).toEqual(article);
+      }
+    );
   });
   test("returns error if ID does not exist", () => {
-    checkIdExists(155).then((output) => {
-      expect(output).toEqual({ status: 404, msg: "article does not exist" });
-    });
+    checkExists("articles", "article_id", 155, "article not found").then(
+      (output) => {
+        expect(output).toEqual({ status: 404, msg: "article does not exist" });
+      }
+    );
   });
 });

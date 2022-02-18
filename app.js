@@ -21,7 +21,6 @@ app.post(
   controllers.comments.postComment
 );
 
-
 app.use(errors.handleCustoms);
 app.use(errors.handlePsqlErrors);
 app.use(errors.incorrectPath);

@@ -3,7 +3,6 @@ const app = require("../app.js");
 const request = require("supertest");
 const testData = require("../db/data/test-data");
 const seed = require("../db/seeds/seed.js");
-const req = require("express/lib/request");
 
 beforeEach(() => {
   return seed(testData);
@@ -154,12 +153,20 @@ describe("/api/articles", () => {
           expect(msg).toBe("invalid query");
         });
     });
-    test("error: 400 - topic is not a valid topic query", () => {
+    test("error: 404 - topic not found", () => {
       return request(app)
         .get("/api/articles?topic=fanta")
-        .expect(400)
+        .expect(404)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("invalid query");
+          expect(msg).toBe("topic not found");
+        });
+    });
+    test("error: 404 - no articles found", () => {
+      return request(app)
+        .get("/api/articles?topic=paper")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("no articles found");
         });
     });
   });
@@ -299,6 +306,63 @@ describe("/api/articles/:article_id/comments", () => {
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("article does not exist");
+        });
+    });
+  });
+  describe("POST", () => {
+    test("status: 201 - returns posted comment", () => {
+      const comment = { username: "lurker", body: "blah blah blah" };
+      return request(app)
+        .post("/api/articles/3/comments")
+        .send(comment)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment.comment_id).toBe(19);
+          expect(comment.author).toBe("lurker");
+          expect(comment.body).toBe("blah blah blah");
+          expect(comment.article_id).toBe(3);
+          expect(comment.votes).toBe(0);
+        });
+    });
+
+    test("error: 404 - returns error if article does not exist", () => {
+      const comment = { username: "lurker", body: "hello" };
+      return request(app)
+        .post("/api/articles/52/comments")
+        .send(comment)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("article does not exist");
+        });
+    });
+    test("error: 404 - returns error if username does not exist", () => {
+      const comment = { username: "lurkerrrr", body: "blahhhhhhh" };
+      request(app)
+        .post("/api/articles/2/comments")
+        .send(comment)
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("user does not exist");
+        });
+    });
+    test("error: 400 - returns error if required data is not provided in request", () => {
+      const comment = { username: "lurker" };
+      request(app)
+        .post("/api/articles/4/comments")
+        .send(comment)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("bad request");
+        });
+    });
+    test("error: 400 - returns error if a key is typed incorrectly", () => {
+      const comment = { username: "lurker", myComment: "lol" };
+      request(app)
+        .post("/api/articles/4/comments")
+        .send(comment)
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("bad request");
         });
     });
   });

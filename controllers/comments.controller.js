@@ -5,7 +5,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
   const id = req.params.article_id;
   return Promise.all([
     models.comments.selectCommentsByArticleId(id),
-    utils.checkIdExists(id),
+    utils.checkExists("articles", "article_id", id, "article does not exist"),
   ])
     .then(([comments]) => {
       res.status(200).send({ comments });
@@ -31,4 +31,3 @@ exports.postComment = (req, res, next) => {
       next(err);
     });
 };
-
