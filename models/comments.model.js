@@ -8,10 +8,3 @@ exports.selectCommentsByArticleId = async (id) => {
   return rows;
 };
 
-exports.deleteComment = async (id) => {
-  const { rows } = await db.query(
-    "DELETE FROM comments WHERE comment_id = $1 RETURNING *;",
-    [id]
-  );
-  return rows;
-};
