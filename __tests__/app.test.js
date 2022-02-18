@@ -23,6 +23,32 @@ describe("universal errors", () => {
   });
 });
 
+describe("/api", () => {
+  describe("GET", () => {
+    test("status: 200 - returns contents of enpoints.json file", () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body: { endpoints } }) => {
+          expect(Object.keys(endpoints)).toHaveLength(9);
+          expect(endpoints).toEqual(
+            expect.objectContaining({
+              "GET /api": expect.any(Object),
+              "GET /api/topics": expect.any(Object),
+              "GET /api/articles": expect.any(Object),
+              "GET /api/articles/:article_id": expect.any(Object),
+              "GET /api/users": expect.any(Object),
+              "GET /api/articles/:article_id/comments": expect.any(Object),
+              "PATCH /api/articles/:article_id": expect.any(Object),
+              "POST /api/articles/:article_id/comments": expect.any(Object),
+              "DELETE /api/comments/:comment_id": expect.any(Object),
+            })
+          );
+        });
+    });
+  });
+});
+
 describe("/api/topics", () => {
   describe("GET", () => {
     test("status: 200 - responds with an array of topic objects", () => {
