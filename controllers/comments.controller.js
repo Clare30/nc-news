@@ -32,14 +32,3 @@ exports.postComment = (req, res, next) => {
     });
 };
 
-exports.removeComment = (req, res, next) => {
-  const id = req.params.comment_id;
-  return models.comments
-    .deleteComment(id)
-    .then(() => {
-      res.status(204).send();
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
