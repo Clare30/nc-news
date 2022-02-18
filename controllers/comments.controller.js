@@ -14,3 +14,32 @@ exports.getCommentsByArticleId = (req, res, next) => {
       next(err);
     });
 };
+
+exports.postComment = (req, res, next) => {
+  const id = req.params.article_id;
+  const body = req.body.body;
+  const username = req.body.username;
+  return Promise.all([
+    utils.checkExists("articles", "article_id", id, "article does not exist"),
+    models.comments.createComment(id, username, body),
+    ,
+  ])
+    .then(([articleCheck, comment]) => {
+      res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.removeComment = (req, res, next) => {
+  const id = req.params.comment_id;
+  return models.comments
+    .deleteComment(id)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch((err) => {
+      next(err);
+    });
+};

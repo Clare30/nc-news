@@ -304,6 +304,22 @@ describe("/api/articles/:article_id/comments", () => {
   });
 });
 
+describe("/api/comments/:comment_id", () => {
+  describe("DELETE", () => {
+    test.only("status: 204 - deletes comment specified by comment id", () => {
+      return request(app)
+        .delete("/api/comments/2")
+        .expect(204)
+        .then(() => {
+          return db.query("SELECT * FROM comments WHERE comment_id = 2;");
+        })
+        .then(({ rows }) => {
+          expect(rows.length).toBe(0);
+        });
+    });
+  });
+});
+
 describe("/api/users", () => {
   describe("GET", () => {
     test("status: 200 - returns an array of user objects", () => {
