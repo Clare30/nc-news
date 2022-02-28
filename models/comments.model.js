@@ -10,14 +10,13 @@ exports.selectCommentsByArticleId = async (id) => {
 };
 
 exports.createComment = async (id, username, body) => {
-  const userCheck = await utils.checkExists(
-    "users",
-    "username",
-    username,
-    "user does not exist"
+  const articleCheck = await utils.checkExists(
+    "articles",
+    "article_id",
+    id,
+    "article does not exist"
   );
-
-  if (!userCheck) {
+  if (!articleCheck) {
     const { rows } = await db.query(
       "INSERT INTO comments (body, article_id, author) VALUES ($1, $2, $3) RETURNING *;",
       [body, id, username]

@@ -19,12 +19,9 @@ exports.postComment = (req, res, next) => {
   const id = req.params.article_id;
   const body = req.body.body;
   const username = req.body.username;
-  return Promise.all([
-    utils.checkExists("articles", "article_id", id, "article does not exist"),
-    models.comments.createComment(id, username, body),
-    ,
-  ])
-    .then(([articleCheck, comment]) => {
+  return models.comments
+    .createComment(id, username, body)
+    .then((comment) => {
       res.status(201).send({ comment });
     })
     .catch((err) => {
