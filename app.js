@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  comments, 
+  comments,
   errors,
   topics,
   users,
@@ -10,8 +10,6 @@ const {
 
 const app = express();
 app.use(express.json());
-
-module.exports = app;
 
 app.get("/api", endpoints.getEndpoints);
 app.get("/api/topics", topics.getTopics);
@@ -26,3 +24,5 @@ app.delete("/api/comments/:comment_id", comments.removeComment);
 app.use(errors.handleCustoms);
 app.use(errors.handlePsqlErrors);
 app.use(errors.incorrectPath);
+
+module.exports = app;
