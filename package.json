@@ -1,8 +1,4 @@
 {
-  "engines": {
-    "node": "17.x",
-    "npm": "8.x"
-  },
   "name": "be-nc-news",
   "version": "1.0.0",
   "description": "bc-nc-news",
