@@ -1,12 +1,10 @@
-const models = require("../models/index");
+const { articles } = require("../models/index");
 
 exports.getArticles = (req, res, next) => {
-  const sortBy = req.query.sort_by;
-  const order = req.query.order;
-  const topic = req.query.topic;
+  const { sort_by, order, topic } = req.query;
 
-  return models.articles
-    .selectArticles(sortBy, order, topic)
+  return articles
+    .selectArticles(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
@@ -16,10 +14,10 @@ exports.getArticles = (req, res, next) => {
 };
 
 exports.getArticleById = (req, res, next) => {
-  const id = req.params.article_id;
+  const { article_id } = req.params;
 
-  return models.articles
-    .selectArticleById(id)
+  return articles
+    .selectArticleById(article_id)
     .then((article) => {
       res.status(200).send({ article });
     })
@@ -29,11 +27,11 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.updateArticle = (req, res, next) => {
-  const id = req.params.article_id;
-  const votes = req.body.inc_votes;
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
 
-  return models.articles
-    .amendArticle(id, votes)
+  return articles
+    .amendArticle(article_id, inc_votes)
     .then((article) => {
       res.status(200).send({ article });
     })
