@@ -1,11 +1,16 @@
 const utils = require("../db/helpers/utils");
-const models = require("../models/index");
+const { comments } = require("../models/index");
 
 exports.getCommentsByArticleId = (req, res, next) => {
-  const id = req.params.article_id;
+  const { article_id } = req.params;
   return Promise.all([
-    models.comments.selectCommentsByArticleId(id),
-    utils.checkExists("articles", "article_id", id, "article does not exist"),
+    comments.selectCommentsByArticleId(article_id),
+    utils.checkExists(
+      "articles",
+      "article_id",
+      article_id,
+      "article does not exist"
+    ),
   ])
     .then(([comments]) => {
       res.status(200).send({ comments });
@@ -16,11 +21,11 @@ exports.getCommentsByArticleId = (req, res, next) => {
 };
 
 exports.postComment = (req, res, next) => {
-  const id = req.params.article_id;
-  const body = req.body.body;
-  const username = req.body.username;
-  return models.comments
-    .createComment(id, username, body)
+  const { article_id } = req.params;
+  const { body, username } = req.body;
+
+  return comments
+    .createComment(article_id, username, body)
     .then((comment) => {
       res.status(201).send({ comment });
     })
@@ -30,10 +35,15 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.removeComment = (req, res, next) => {
-  const id = req.params.comment_id;
+  const { comment_id } = req.params;
   return Promise.all([
-    models.comments.deleteComment(id),
-    utils.checkExists("comments", "comment_id", id, "comment does not exist"),
+    comments.deleteComment(comment_id),
+    utils.checkExists(
+      "comments",
+      "comment_id",
+      comment_id,
+      "comment does not exist"
+    ),
   ])
     .then(() => {
       res.sendStatus(204);

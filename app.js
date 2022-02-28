@@ -1,27 +1,27 @@
 const express = require("express");
-const controllers = require("./controllers/");
-const errors = require("./controllers/errors.controller");
+const {
+  comments, 
+  errors,
+  topics,
+  users,
+  endpoints,
+  articles,
+} = require("./controllers/");
 
 const app = express();
 app.use(express.json());
 
 module.exports = app;
 
-app.get("/api", controllers.endpoints.getEndpoints);
-app.get("/api/topics", controllers.topics.getTopics);
-app.get("/api/articles", controllers.articles.getArticles);
-app.get("/api/articles/:article_id", controllers.articles.getArticleById);
-app.get("/api/users", controllers.users.getUsers);
-app.get(
-  "/api/articles/:article_id/comments",
-  controllers.comments.getCommentsByArticleId
-);
-app.patch("/api/articles/:article_id", controllers.articles.updateArticle);
-app.post(
-  "/api/articles/:article_id/comments",
-  controllers.comments.postComment
-);
-app.delete("/api/comments/:comment_id", controllers.comments.removeComment);
+app.get("/api", endpoints.getEndpoints);
+app.get("/api/topics", topics.getTopics);
+app.get("/api/articles", articles.getArticles);
+app.get("/api/articles/:article_id", articles.getArticleById);
+app.get("/api/users", users.getUsers);
+app.get("/api/articles/:article_id/comments", comments.getCommentsByArticleId);
+app.patch("/api/articles/:article_id", articles.updateArticle);
+app.post("/api/articles/:article_id/comments", comments.postComment);
+app.delete("/api/comments/:comment_id", comments.removeComment);
 
 app.use(errors.handleCustoms);
 app.use(errors.handlePsqlErrors);
