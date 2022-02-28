@@ -366,9 +366,9 @@ describe("/api/articles/:article_id/comments", () => {
       request(app)
         .post("/api/articles/2/comments")
         .send(comment)
-        .expect(404)
+        .expect(400)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("user does not exist");
+          expect(msg).toBe("bad request");
         });
     });
     test("error: 400 - returns error if required data is not provided in request", () => {
