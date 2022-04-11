@@ -433,7 +433,6 @@ describe("/api/users", () => {
               })
             );
             expect(user.name).toBe(undefined);
-            expect(user.avatar_url).toBe(undefined);
           });
         });
     });
