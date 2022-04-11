@@ -430,6 +430,7 @@ describe("/api/users", () => {
             expect(user).toEqual(
               expect.objectContaining({
                 username: expect.any(String),
+                avatar_url: expect.any(String)
               })
             );
             expect(user.name).toBe(undefined);
