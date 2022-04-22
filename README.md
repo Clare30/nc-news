@@ -2,7 +2,7 @@
 
 ## Intro 
 
-This project was created using express & PostgreSQL to provide access to articles, users and comments, hosted on Heroku here: https://git.heroku.com/nc-news-cm.git
+This project was created using express & PostgreSQL to provide access to articles, users and comments, hosted on Heroku here: https://nc-news-cm.herokuapp.com/api
 
 
 ## Setup
