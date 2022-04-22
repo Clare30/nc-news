@@ -27,3 +27,8 @@ To set up the environment variables, create 2 .env files: .env.test & .env.devel
 - /api/articles/:article_id
 - /api/articles/:article_id/comments
 - /api/comments/:comment_id
+
+## Requirements
+
+* Node v16.13.2
+* Postgres 12.9
