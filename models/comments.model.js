@@ -3,7 +3,7 @@ const utils = require("../db/helpers/utils");
 
 exports.selectCommentsByArticleId = async (id) => {
   const { rows } = await db.query(
-    "SELECT * FROM comments WHERE article_id = $1",
+    "SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC" ,
     [id]
   );
   return rows;
